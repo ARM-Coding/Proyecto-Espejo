@@ -50,6 +50,15 @@ switch (filtroActual) {
           const elemento = document.createElement("li");
           const botonEstado = document.createElement("button");
 
+          botonEstado.addEventListener("click", () => {
+            console.log("Test");
+            if (tarea.completada){
+              tarea.completada = false;
+            } else {
+              tarea.completada = true;
+            };
+          });
+
           elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
           botonEstado.innerText = (tarea.completada ? "Completada " : "Pendiente ");
           botonEstado.classList.add("button")
@@ -94,6 +103,14 @@ switch (filtroActual) {
           botonEstado.type = "submit"
           elemento.appendChild(botonEstado);
 
+          botonEstado.addEventListener("click", () => {
+            if (tarea.completada){
+              tarea.completada = false;
+            } else {
+              tarea.completada = true;
+            };
+          });
+
           switch (tarea.prioridad) {
             case "Alta":
               elemento.classList.add("item-tarea", "Alta");
@@ -131,6 +148,14 @@ switch (filtroActual) {
           botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
           botonEstado.type = "submit"
           elemento.appendChild(botonEstado);
+
+          botonEstado.addEventListener("click", () => {
+            if (tarea.completada){
+              tarea.completada = false;
+            } else {
+              tarea.completada = true;
+            };
+          });
 
           switch (tarea.prioridad) {
             case "Alta":
