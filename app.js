@@ -21,6 +21,11 @@ async function inicializarApp() {
   // TODO: Simular una espera de 1.5 segundos usando una Promesa (setTimeout)
   // TODO: Una vez pasada la espera, ocultar el div #loading-state
   // TODO: Invocar a la función pintarTareas()
+  await new Promise(resolve => {
+    setTimeout(resolve, 1500);
+  });
+  loadingState.innerHTML = "";
+  pintarTareas();
 }
 
 // 4. FUNCIÓN DE RENDERIZADO: Encargada de pintar los nodos en el HTML
