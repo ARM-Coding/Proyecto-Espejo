@@ -38,24 +38,121 @@ function pintarTareas() {
   // TODO: Inyectar el <li> resultante en listaContenedor usando .appendChild()
   listaContenedor.innerHTML = "";
   let tareasFiltradas = [];
+  let elementosTareasFiltradas = [];
 
 switch (filtroActual) {
     case "Todas":
         tareasFiltradas = [];
+        elementosTareasFiltradas = [];
         tareasFiltradas = [...tareas];
-        console.log(tareasFiltradas);
+
+        tareasFiltradas.forEach(tarea => {
+          const elemento = document.createElement("li");
+          const botonEstado = document.createElement("button");
+
+          elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
+          botonEstado.innerText = (tarea.completada ? "Completada " : "Pendiente ");
+          botonEstado.classList.add("button")
+          botonEstado.type = "submit"
+          elemento.appendChild(botonEstado);
+
+          switch (tarea.prioridad) {
+            case "Alta":
+              elemento.classList.add("item-tarea", "Alta");
+              break;
+            case "Media":
+              elemento.classList.add("item-tarea", "Media");
+              break;
+            case "Baja":
+              elemento.classList.add("item-tarea", "Baja");
+              break;
+          };
+
+          if (tarea.completada) {
+            elemento.classList.add("completada");
+          };
+          
+          elementosTareasFiltradas.push(elemento);
+          }
+        );
+
+        elementosTareasFiltradas.forEach(elemento => listaContenedor.appendChild(elemento));
         break;
+
     case "Pendientes":
         tareasFiltradas = [];
+        elementosTareasFiltradas = [];
         tareasFiltradas = tareas.filter(tarea => tarea.completada === false);
-        //tareas.forEach(tarea => tarea.completada === false ? tareasFiltradas.push(tarea) : null);
-        console.log(tareasFiltradas);
+        // tareas.forEach(tarea => tarea.completada === false ? tareasFiltradas.push(tarea) : null);
+
+        tareasFiltradas.forEach(tarea => {
+          const elemento = document.createElement("li");
+          const botonEstado = document.createElement("button");
+
+          elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
+          botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
+          botonEstado.type = "submit"
+          elemento.appendChild(botonEstado);
+
+          switch (tarea.prioridad) {
+            case "Alta":
+              elemento.classList.add("item-tarea", "Alta");
+              break;
+            case "Media":
+              elemento.classList.add("item-tarea", "Media");
+              break;
+            case "Baja":
+              elemento.classList.add("item-tarea", "Baja");
+              break;
+          };
+
+          if (tarea.completada) {
+            elemento.classList.add("completada");
+          };
+          
+          elementosTareasFiltradas.push(elemento);
+          }
+        );
+
+        elementosTareasFiltradas.forEach(elemento => listaContenedor.appendChild(elemento));
         break;
+
     case "Completadas":
         tareasFiltradas = [];
+        elementosTareasFiltradas = [];
         tareasFiltradas = tareas.filter(tarea => tarea.completada === true);
-        //tareas.forEach(tarea => tarea.completada === true ? tareasFiltradas.push(tarea) : null);
-        console.log(tareasFiltradas);
+        // tareas.forEach(tarea => tarea.completada === true ? tareasFiltradas.push(tarea) : null);
+
+        tareasFiltradas.forEach(tarea => {
+          const elemento = document.createElement("li");
+          const botonEstado = document.createElement("button");
+
+          elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
+          botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
+          botonEstado.type = "submit"
+          elemento.appendChild(botonEstado);
+
+          switch (tarea.prioridad) {
+            case "Alta":
+              elemento.classList.add("item-tarea", "Alta");
+              break;
+            case "Media":
+              elemento.classList.add("item-tarea", "Media");
+              break;
+            case "Baja":
+              elemento.classList.add("item-tarea", "Baja");
+              break;
+          };
+
+          if (tarea.completada) {
+            elemento.classList.add("completada");
+          };
+          
+          elementosTareasFiltradas.push(elemento);
+          }
+        );
+
+        elementosTareasFiltradas.forEach(elemento => listaContenedor.appendChild(elemento));
         break;
 }
 
