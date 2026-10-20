@@ -47,12 +47,14 @@ switch (filtroActual) {
         break;
     case "Pendientes":
         tareasFiltradas = [];
-        tareas.forEach(tarea => tareasFiltradas.push(tareas.filter(completada === false)));
+        tareasFiltradas = tareas.filter(tarea => tarea.completada === false);
+        //tareas.forEach(tarea => tarea.completada === false ? tareasFiltradas.push(tarea) : null);
         console.log(tareasFiltradas);
         break;
     case "Completadas":
         tareasFiltradas = [];
-        tareas.forEach(tarea => tareasFiltradas.push(tareas.filter(completada === true)));
+        tareasFiltradas = tareas.filter(tarea => tarea.completada === true);
+        //tareas.forEach(tarea => tarea.completada === true ? tareasFiltradas.push(tarea) : null);
         console.log(tareasFiltradas);
         break;
 }
