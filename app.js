@@ -36,6 +36,27 @@ function pintarTareas() {
   // TODO: Configurar las clases CSS según la prioridad y el estado (completada)
   // TODO: Añadir un botón dentro de cada <li> para poder alternar el estado (Completada/Pendiente)
   // TODO: Inyectar el <li> resultante en listaContenedor usando .appendChild()
+  listaContenedor.innerHTML = "";
+  let tareasFiltradas = [];
+
+switch (filtroActual) {
+    case "Todas":
+        tareasFiltradas = [];
+        tareasFiltradas = [...tareas];
+        console.log(tareasFiltradas);
+        break;
+    case "Pendientes":
+        tareasFiltradas = [];
+        tareas.forEach(tarea => tareasFiltradas.push(tareas.filter(completada === false)));
+        console.log(tareasFiltradas);
+        break;
+    case "Completadas":
+        tareasFiltradas = [];
+        tareas.forEach(tarea => tareasFiltradas.push(tareas.filter(completada === true)));
+        console.log(tareasFiltradas);
+        break;
+}
+
 }
 
 // 5. MANEJO DE EVENTOS: Captura de formulario
@@ -57,6 +78,12 @@ botonesFiltro.forEach(boton => {
 
     // TODO: Actualizar la variable 'filtroActual' con el atributo 'data-filtro' del botón
     // TODO: Invocar pintarTareas() para refrescar la pantalla
+
+    let botonEnSeleccion = event.target;
+    let filtroSeleccionado = botonEnSeleccion.dataset.filtro;
+    filtroActual = filtroSeleccionado;
+    pintarTareas();
+
   });
 });
 
