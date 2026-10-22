@@ -46,6 +46,10 @@ button[type="submit"] {
   cursor: pointer;
 }
 
+button {
+  cursor: pointer;
+}
+
 .filter-section {
   margin: 1.5rem 0;
   display: flex;

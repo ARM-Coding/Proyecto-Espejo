@@ -51,18 +51,18 @@ switch (filtroActual) {
           const botonEstado = document.createElement("button");
 
           botonEstado.addEventListener("click", () => {
-            console.log("Test");
-            if (tarea.completada){
-              tarea.completada = false;
-            } else {
-              tarea.completada = true;
-            };
+              tareas = tareas.map(t =>
+                  t.id === tarea.id
+                      ? { ...t, completada: !t.completada }
+                      : t
+              );
+              pintarTareas();
           });
 
           elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
           botonEstado.innerText = (tarea.completada ? "Completada " : "Pendiente ");
           botonEstado.classList.add("button")
-          botonEstado.type = "submit"
+          botonEstado.type = "button"
           elemento.appendChild(botonEstado);
 
           switch (tarea.prioridad) {
@@ -100,7 +100,7 @@ switch (filtroActual) {
 
           elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
           botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
-          botonEstado.type = "submit"
+          botonEstado.type = "button"
           elemento.appendChild(botonEstado);
 
           botonEstado.addEventListener("click", () => {
@@ -146,7 +146,7 @@ switch (filtroActual) {
 
           elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
           botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
-          botonEstado.type = "submit"
+          botonEstado.type = "button"
           elemento.appendChild(botonEstado);
 
           botonEstado.addEventListener("click", () => {
