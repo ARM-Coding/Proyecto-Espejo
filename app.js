@@ -98,18 +98,19 @@ switch (filtroActual) {
           const elemento = document.createElement("li");
           const botonEstado = document.createElement("button");
 
+          botonEstado.addEventListener("click", () => {
+              tareas = tareas.map(t =>
+                  t.id === tarea.id
+                      ? { ...t, completada: !t.completada }
+                      : t
+              );
+              pintarTareas();
+          });
+
           elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
           botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
           botonEstado.type = "button"
           elemento.appendChild(botonEstado);
-
-          botonEstado.addEventListener("click", () => {
-            if (tarea.completada){
-              tarea.completada = false;
-            } else {
-              tarea.completada = true;
-            };
-          });
 
           switch (tarea.prioridad) {
             case "Alta":
@@ -144,18 +145,20 @@ switch (filtroActual) {
           const elemento = document.createElement("li");
           const botonEstado = document.createElement("button");
 
+          botonEstado.addEventListener("click", () => {
+              tareas = tareas.map(t =>
+                  t.id === tarea.id
+                      ? { ...t, completada: !t.completada }
+                      : t
+              );
+              pintarTareas();
+          });
+
+
           elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
           botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
           botonEstado.type = "button"
           elemento.appendChild(botonEstado);
-
-          botonEstado.addEventListener("click", () => {
-            if (tarea.completada){
-              tarea.completada = false;
-            } else {
-              tarea.completada = true;
-            };
-          });
 
           switch (tarea.prioridad) {
             case "Alta":
