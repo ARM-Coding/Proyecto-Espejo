@@ -15,6 +15,7 @@ const selectPrioridad = document.querySelector('#select-prioridad');
 const listaContenedor = document.querySelector('#lista-tareas');
 const loadingState = document.querySelector('#loading-state');
 const botonesFiltro = document.querySelectorAll('.btn-filtro');
+const listaEspejo = document.querySelector("#lista-espejo");
 
 // 3. FUNCIÓN ASÍNCRONA (AJAX simulado): Debe ejecutarse al arrancar la web
 async function inicializarApp() {
@@ -30,161 +31,99 @@ async function inicializarApp() {
 
 // 4. FUNCIÓN DE RENDERIZADO: Encargada de pintar los nodos en el HTML
 function pintarTareas() {
-  // TODO: Limpiar el contenedor listaContenedor (innerHTML = '')
-  // TODO: Filtrar el array 'tareas' según el 'filtroActual' usando .filter()
-  // TODO: Recorrer el array filtrado y crear dinámicamente un elemento <li> por cada tarea
-  // TODO: Configurar las clases CSS según la prioridad y el estado (completada)
-  // TODO: Añadir un botón dentro de cada <li> para poder alternar el estado (Completada/Pendiente)
-  // TODO: Inyectar el <li> resultante en listaContenedor usando .appendChild()
-  listaContenedor.innerHTML = "";
-  let tareasFiltradas = [];
-  let elementosTareasFiltradas = [];
+    // Limpiar ambos contenedores
+    listaContenedor.replaceChildren();
+    listaEspejo.replaceChildren();
 
-switch (filtroActual) {
-    case "Todas":
-        tareasFiltradas = [];
-        elementosTareasFiltradas = [];
-        tareasFiltradas = [...tareas];
+    // Aplicar el filtro actual
+    let tareasFiltradas = [];
 
-        tareasFiltradas.forEach(tarea => {
-          const elemento = document.createElement("li");
-          const botonEstado = document.createElement("button");
+    switch (filtroActual) {
+        case "Todas":
+            tareasFiltradas = [...tareas];
+            break;
 
-          botonEstado.addEventListener("click", () => {
-              tareas = tareas.map(t =>
-                  t.id === tarea.id
-                      ? { ...t, completada: !t.completada }
-                      : t
-              );
-              pintarTareas();
-          });
+        case "Pendientes":
+            tareasFiltradas = tareas.filter(
+                tarea => !tarea.completada
+            );
+            break;
 
-          elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
-          botonEstado.innerText = (tarea.completada ? "Completada " : "Pendiente ");
-          botonEstado.classList.add("button")
-          botonEstado.type = "button"
-          elemento.appendChild(botonEstado);
+        case "Completadas":
+            tareasFiltradas = tareas.filter(
+                tarea => tarea.completada
+            );
+            break;
+    }
 
-          switch (tarea.prioridad) {
-            case "Alta":
-              elemento.classList.add("item-tarea", "Alta");
-              break;
-            case "Media":
-              elemento.classList.add("item-tarea", "Media");
-              break;
-            case "Baja":
-              elemento.classList.add("item-tarea", "Baja");
-              break;
-          };
+    tareasFiltradas.forEach(tarea => {
+        // 1. LISTA INTERACTIVA
+        const liOriginal = document.createElement("li");
+        const textoTarea = document.createElement("span");
+        const botonEstado = document.createElement("button");
 
-          if (tarea.completada) {
-            elemento.classList.add("completada");
-          };
-          
-          elementosTareasFiltradas.push(elemento);
-          }
+        textoTarea.textContent =
+            tarea.titulo + " | " + tarea.prioridad;
+
+        botonEstado.type = "button";
+        botonEstado.classList.add("button", "btn-accion");
+        botonEstado.dataset.id = tarea.id;
+        botonEstado.textContent = tarea.completada
+            ? "Pendiente"
+            : "Completar";
+
+        liOriginal.appendChild(textoTarea);
+        liOriginal.appendChild(botonEstado);
+
+        // Clases según prioridad
+        liOriginal.classList.add("item-tarea", tarea.prioridad);
+
+        if (tarea.completada) {
+            liOriginal.classList.add("completada");
+        }
+
+        listaContenedor.appendChild(liOriginal);
+
+        // 2. LISTA ESPEJO (SOLO LECTURA)
+        const liEspejo = document.createElement("li");
+        const textoEspejo = document.createElement("span");
+        const estadoEspejo = document.createElement("strong");
+
+        liEspejo.classList.add(
+            tarea.completada ? "completada" : "pendiente"
         );
 
-        elementosTareasFiltradas.forEach(elemento => listaContenedor.appendChild(elemento));
-        break;
+        textoEspejo.textContent =
+            `[RÉPLICA] ${tarea.titulo} — Prioridad: ${tarea.prioridad} — Estado: `;
 
-    case "Pendientes":
-        tareasFiltradas = [];
-        elementosTareasFiltradas = [];
-        tareasFiltradas = tareas.filter(tarea => tarea.completada === false);
-        // tareas.forEach(tarea => tarea.completada === false ? tareasFiltradas.push(tarea) : null);
+        estadoEspejo.textContent =
+            tarea.completada ? "Hecho" : "Pendiente";
 
-        tareasFiltradas.forEach(tarea => {
-          const elemento = document.createElement("li");
-          const botonEstado = document.createElement("button");
+        textoEspejo.appendChild(estadoEspejo);
+        liEspejo.appendChild(textoEspejo);
 
-          botonEstado.addEventListener("click", () => {
-              tareas = tareas.map(t =>
-                  t.id === tarea.id
-                      ? { ...t, completada: !t.completada }
-                      : t
-              );
-              pintarTareas();
-          });
-
-          elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
-          botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
-          botonEstado.type = "button"
-          elemento.appendChild(botonEstado);
-
-          switch (tarea.prioridad) {
-            case "Alta":
-              elemento.classList.add("item-tarea", "Alta");
-              break;
-            case "Media":
-              elemento.classList.add("item-tarea", "Media");
-              break;
-            case "Baja":
-              elemento.classList.add("item-tarea", "Baja");
-              break;
-          };
-
-          if (tarea.completada) {
-            elemento.classList.add("completada");
-          };
-          
-          elementosTareasFiltradas.push(elemento);
-          }
-        );
-
-        elementosTareasFiltradas.forEach(elemento => listaContenedor.appendChild(elemento));
-        break;
-
-    case "Completadas":
-        tareasFiltradas = [];
-        elementosTareasFiltradas = [];
-        tareasFiltradas = tareas.filter(tarea => tarea.completada === true);
-        // tareas.forEach(tarea => tarea.completada === true ? tareasFiltradas.push(tarea) : null);
-
-        tareasFiltradas.forEach(tarea => {
-          const elemento = document.createElement("li");
-          const botonEstado = document.createElement("button");
-
-          botonEstado.addEventListener("click", () => {
-              tareas = tareas.map(t =>
-                  t.id === tarea.id
-                      ? { ...t, completada: !t.completada }
-                      : t
-              );
-              pintarTareas();
-          });
-
-
-          elemento.textContent = tarea.titulo + " | " + tarea.prioridad;
-          botonEstado.textContent = (tarea.completada ? "Completada " : "Pendiente ");
-          botonEstado.type = "button"
-          elemento.appendChild(botonEstado);
-
-          switch (tarea.prioridad) {
-            case "Alta":
-              elemento.classList.add("item-tarea", "Alta");
-              break;
-            case "Media":
-              elemento.classList.add("item-tarea", "Media");
-              break;
-            case "Baja":
-              elemento.classList.add("item-tarea", "Baja");
-              break;
-          };
-
-          if (tarea.completada) {
-            elemento.classList.add("completada");
-          };
-          
-          elementosTareasFiltradas.push(elemento);
-          }
-        );
-
-        elementosTareasFiltradas.forEach(elemento => listaContenedor.appendChild(elemento));
-        break;
+        listaEspejo.appendChild(liEspejo);
+    });
 }
 
-}
+
+listaContenedor.addEventListener("click", (event) => {
+    const boton = event.target.closest(".btn-accion");
+
+    if (!boton || !listaContenedor.contains(boton)) {
+        return;
+    }
+
+    const idBuscar = Number(boton.dataset.id);
+
+    tareas = tareas.map(tarea =>
+        tarea.id === idBuscar
+            ? { ...tarea, completada: !tarea.completada }
+            : tarea
+    );
+
+    pintarTareas();
+});
 
 // 5. MANEJO DE EVENTOS: Captura de formulario
 formulario.addEventListener('submit', (event) => {
